@@ -1,0 +1,48 @@
+extends layout
+
+block content
+  .container
+    h1= title
+    form(action='/add' method='post')
+      legend Add a Task
+      .form-group
+        input(class='form-control', type='text', id='title',  name='title' placeholder='title')
+      .form-group
+        textarea(class='form-control', name='description', rows='1', cols='50' placeholder='description')
+      .form-group
+        button(class='btn btn-primary') Add
+    form(action='')
+    hr
+    table.table.table-bordered.table-hover
+      thead
+        tr
+          th #
+          th Title
+          th Description
+          th Operations
+      tbody
+        //- - for(var i=0; i< tasks.length; i++)
+        //-   tr 
+        //-     td= i+1
+        //-     td=tasks[i].title
+        //-     td=tasks[i].description
+        //-     td=tasks[i].status
+        each task, index in tasks
+          tr
+            td= index+1
+            td= task.title
+            td= task.description
+            td
+              - let url = 'turn/' + task.id;
+              a(class=(task.status ? 'btn btn-success' : 'btn btn-dark') href='/' + url) Done
+              |
+              |
+              - url = 'delete/' + task.id;
+              a(class='btn btn-danger' id='delete' href='/' + url) Delete
+  script.
+    document.getElementById("delete").addEventListener("click", function(e){
+      let response = confirm('Are you sure to delete?');
+      if(!response){
+        e.preventDefault();
+      }
+    });
